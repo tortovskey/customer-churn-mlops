@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ChurnOps | Главная</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="shell nav">
+        <a class="brand" href="index.html"><span class="brand-mark">C</span>ChurnOps</a>
+        <div class="nav-links">
+          <a href="clients.html">Клиенты</a>
+          <a href="predictions.html">Прогнозы</a>
+          <a href="ml_dashboard.html">MLOps</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <section class="hero">
+        <div class="hero-grid">
+          <div>
+            <h1>Система прогнозирования оттока клиентов</h1>
+            <p class="lead">
+              Информационная система принимает клиентские данные, вызывает ML-модель, сохраняет прогноз и показывает состояние жизненного цикла модели.
+            </p>
+            <div class="toolbar" style="margin-top: 22px">
+              <a class="button primary" href="clients.html">Открыть клиентов</a>
+              <a class="button" href="ml_dashboard.html">MLOps-панель</a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h2>Поток данных</h2>
+              <div class="log-list" style="margin-top: 16px">
+                <div class="log-item"><strong>1. Данные</strong><div class="muted">Client API + PostgreSQL</div></div>
+                <div class="log-item"><strong>2. Обучение</strong><div class="muted">RandomForest + MLflow</div></div>
+                <div class="log-item"><strong>3. Serving</strong><div class="muted">FastAPI endpoint</div></div>
+                <div class="log-item"><strong>4. Мониторинг</strong><div class="muted">ML-журнал и метрики</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid three">
+        <a class="card" href="clients.html">
+          <div class="card-body metric">
+            <span class="muted">Customer Data</span>
+            <span class="value">CRUD</span>
+            <span>Добавление, карточки и обновление клиентов.</span>
+          </div>
+        </a>
+        <a class="card" href="predictions.html">
+          <div class="card-body metric">
+            <span class="muted">Model Serving</span>
+            <span class="value">API</span>
+            <span>Предсказания сохраняются с версией модели.</span>
+          </div>
+        </a>
+        <a class="card" href="ml_dashboard.html">
+          <div class="card-body metric">
+            <span class="muted">MLOps</span>
+            <span class="value">MLflow</span>
+            <span>Метрики, registry, retraining и журнал событий.</span>
+          </div>
+        </a>
+      </section>
+    </main>
+
+    <footer class="shell">FastAPI · PostgreSQL · scikit-learn · MLflow</footer>
+  </body>
+</html>
+

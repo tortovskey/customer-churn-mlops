@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ChurnOps | MLOps</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script defer src="js/api.js"></script>
+    <script defer src="js/ml_dashboard.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="shell nav">
+        <a class="brand" href="index.html"><span class="brand-mark">C</span>ChurnOps</a>
+        <div class="nav-links">
+          <a href="clients.html">Клиенты</a>
+          <a href="predictions.html">Прогнозы</a>
+          <a href="ml_dashboard.html">MLOps</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div class="page-head">
+        <div>
+          <h1>MLOps-панель</h1>
+          <p class="lead">Версия модели, качество, переобучение и журнал ML-событий.</p>
+        </div>
+        <div class="toolbar">
+          <button class="primary" data-train-model>Запустить обучение</button>
+        </div>
+      </div>
+      <div class="status" data-ml-status></div>
+
+      <section class="grid" style="margin-top: 16px">
+        <div class="card">
+          <div class="card-body">
+            <h2>Текущая модель</h2>
+            <div style="margin-top: 16px" data-model-version></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h2>Метрики качества</h2>
+            <div style="margin-top: 16px" data-model-metrics></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h2>ML-журнал</h2>
+            <div class="log-list" style="margin-top: 16px" data-ml-logs></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell">MLflow tracking · Model registry · Retraining</footer>
+  </body>
+</html>
+

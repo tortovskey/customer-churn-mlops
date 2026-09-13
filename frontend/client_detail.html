@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ChurnOps | Карточка клиента</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script defer src="js/api.js"></script>
+    <script defer src="js/clients.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="shell nav">
+        <a class="brand" href="index.html"><span class="brand-mark">C</span>ChurnOps</a>
+        <div class="nav-links">
+          <a href="clients.html">Клиенты</a>
+          <a href="predictions.html">Прогнозы</a>
+          <a href="ml_dashboard.html">MLOps</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div class="page-head">
+        <div>
+          <h1>Карточка клиента</h1>
+          <p class="lead">Прогноз сохраняется в БД вместе с активной версией модели.</p>
+        </div>
+        <div class="toolbar">
+          <button class="primary" data-predict-client>Сделать прогноз</button>
+          <button class="danger" data-delete-client>Удалить</button>
+        </div>
+      </div>
+      <div class="status" data-client-status></div>
+
+      <section class="grid two" style="margin-top: 16px">
+        <div class="grid">
+          <div class="card">
+            <div class="card-body">
+              <h2>Данные клиента</h2>
+              <div style="margin-top: 16px" data-client-detail></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h2>Последний прогноз</h2>
+              <div style="margin-top: 16px" data-prediction-panel>
+                <div class="empty">Прогноз не выполнен</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h2>Редактировать</h2>
+            <form class="form-grid" data-client-update-form style="margin-top: 16px">
+              <label class="wide">ФИО<input name="full_name" required minlength="2" /></label>
+              <label>Возраст<input name="age" type="number" required min="18" max="100" /></label>
+              <label>Срок, мес.<input name="tenure_months" type="number" required min="0" max="360" /></label>
+              <label>Платеж<input name="monthly_payment" type="number" required min="0" step="0.01" /></label>
+              <label>Обращения<input name="support_requests" type="number" required min="0" /></label>
+              <label>
+                Тариф
+                <select name="tariff_type">
+                  <option value="basic">Basic</option>
+                  <option value="standard">Standard</option>
+                  <option value="premium">Premium</option>
+                  <option value="enterprise">Enterprise</option>
+                </select>
+              </label>
+              <label>Активность, %<input name="last_month_activity" type="number" required min="0" max="100" /></label>
+              <label class="wide"><input name="has_debt" type="checkbox" /> Есть задолженность</label>
+              <button class="primary wide" type="submit">Обновить</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell">Churn prediction serving</footer>
+  </body>
+</html>
+

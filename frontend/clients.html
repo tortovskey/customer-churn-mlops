@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ChurnOps | Клиенты</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script defer src="js/api.js"></script>
+    <script defer src="js/clients.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="shell nav">
+        <a class="brand" href="index.html"><span class="brand-mark">C</span>ChurnOps</a>
+        <div class="nav-links">
+          <a href="clients.html">Клиенты</a>
+          <a href="predictions.html">Прогнозы</a>
+          <a href="ml_dashboard.html">MLOps</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div class="page-head">
+        <div>
+          <h1>Клиенты</h1>
+          <p class="lead">Данные клиентов используются для обучения, inference и сохранения результатов прогноза.</p>
+        </div>
+        <div class="status" data-client-status></div>
+      </div>
+
+      <section class="grid two">
+        <div class="card">
+          <div class="card-body">
+            <h2>Добавить клиента</h2>
+            <form class="form-grid" data-client-form style="margin-top: 16px">
+              <label class="wide">ФИО<input name="full_name" required minlength="2" /></label>
+              <label>Возраст<input name="age" type="number" required min="18" max="100" value="35" /></label>
+              <label>Срок, мес.<input name="tenure_months" type="number" required min="0" max="360" value="18" /></label>
+              <label>Платеж<input name="monthly_payment" type="number" required min="0" step="0.01" value="2900" /></label>
+              <label>Обращения<input name="support_requests" type="number" required min="0" value="2" /></label>
+              <label>
+                Тариф
+                <select name="tariff_type">
+                  <option value="basic">Basic</option>
+                  <option value="standard" selected>Standard</option>
+                  <option value="premium">Premium</option>
+                  <option value="enterprise">Enterprise</option>
+                </select>
+              </label>
+              <label>Активность, %<input name="last_month_activity" type="number" required min="0" max="100" value="64" /></label>
+              <label class="wide"><input name="has_debt" type="checkbox" /> Есть задолженность</label>
+              <button class="primary wide" type="submit">Сохранить</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h2>Список клиентов</h2>
+            <div class="table-wrap" style="margin-top: 16px">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Клиент</th>
+                    <th>Возраст</th>
+                    <th>Срок</th>
+                    <th>Платеж</th>
+                    <th>Обращения</th>
+                    <th>Тариф</th>
+                    <th>Активность</th>
+                    <th>Долг</th>
+                  </tr>
+                </thead>
+                <tbody data-clients-table></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell">ChurnOps customer data layer</footer>
+  </body>
+</html>
+
