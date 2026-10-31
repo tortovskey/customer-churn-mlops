@@ -1,54 +1,59 @@
 # Customer Churn MLOps System
 
-Учебно-практический проект по теме «Интеграция моделей машинного обучения в информационную систему: архитектура и процессы MLOps».
+An educational project demonstrating how to integrate machine learning into an
+information system, including the application architecture and MLOps workflow.
 
-Система прогнозирует вероятность оттока клиента, сохраняет результат в PostgreSQL и показывает жизненный цикл ML-модели: обучение, метрики, версию, serving, журнал событий и переобучение.
+The system estimates customer churn probability, stores predictions in PostgreSQL,
+and exposes the model lifecycle: training, metrics, versioning, serving, event
+logging, and retraining.
 
-## Цель проекта
+## Project goal
 
-Показать не notebook с обучением модели, а полноценную информационную систему:
+Demonstrate a complete application workflow around a machine learning model:
 
-`данные клиента -> FastAPI -> ML-модель -> прогноз -> PostgreSQL -> история -> MLOps monitoring`
+`Customer data -> FastAPI -> ML model -> Prediction -> PostgreSQL -> History -> MLOps monitoring`
 
-## Стек
+## Technology stack
 
 - Backend: Python 3.12, FastAPI, SQLAlchemy 2.x, Pydantic v2, Uvicorn.
-- ML: scikit-learn, pandas, numpy, joblib, MLflow.
+- Machine learning: scikit-learn, pandas, NumPy, joblib, MLflow.
 - Database: PostgreSQL, Alembic.
-- Frontend: HTML5, CSS3, Vanilla JavaScript, Fetch API.
+- Frontend: HTML5, CSS3, vanilla JavaScript, Fetch API.
 - DevOps/MLOps: Docker, Docker Compose, MLflow Tracking Server, pytest, GitHub Actions, loguru, pre-commit.
 
-## Архитектура
+## Architecture
 
-Проект разделен на слои:
+The application is organized into layers:
 
-- Frontend Layer: страницы `frontend/*.html`, стили и JS-клиенты API.
-- API Layer: FastAPI routers в `backend/app/routers`.
-- Business Logic Layer: сервисы в `backend/app/services`.
-- ML Service Layer: загрузка модели и inference в `backend/app/ml`.
-- Data Access Layer: SQLAlchemy модели и сессии в `backend/app/models`, `backend/app/database`.
-- MLOps Layer: обучение, MLflow tracking, registry, метрики и журнал событий.
+- Frontend: pages in `frontend/*.html`, styles, and JavaScript API clients.
+- API: FastAPI routers in `backend/app/routers`.
+- Business logic: services in `backend/app/services`.
+- ML service: model loading and inference in `backend/app/ml`.
+- Data access: SQLAlchemy models and sessions in `backend/app/models` and `backend/app/database`.
+- MLOps: training, MLflow tracking, registry records, metrics, and event logging.
 
-## Быстрый запуск через Docker Compose
+## Quick start with Docker Compose
 
 ```bash
 cd project
 docker compose up --build
 ```
 
-После запуска:
+Services are available at:
 
-- Frontend: http://localhost:8080
-- Backend API: http://localhost:8000
-- Swagger UI: http://localhost:8000/docs
-- MLflow: http://localhost:5000
-- PostgreSQL: `localhost:5432`
+| Service | Address |
+|---|---|
+| Frontend | http://localhost:8080 |
+| Backend API | http://localhost:8000 |
+| Swagger UI | http://localhost:8000/docs |
+| MLflow | http://localhost:5000 |
+| PostgreSQL | `localhost:5432` |
 
-Миграции Alembic запускаются в контейнере backend перед стартом Uvicorn.
+The backend container runs Alembic migrations before starting Uvicorn.
 
-## Локальный запуск backend
+## Run the backend locally
 
-```bash
+```powershell
 cd project/backend
 python -m venv .venv
 .venv\Scripts\activate
@@ -58,13 +63,16 @@ alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
-Для локального запуска PostgreSQL и MLflow можно использовать Docker Compose, а backend запускать отдельно.
+You can run PostgreSQL and MLflow through Docker Compose while developing the
+backend locally.
 
 ## Frontend
 
-Frontend статический. При Docker Compose его отдает nginx на `http://localhost:8080`.
+The frontend is static. Docker Compose serves it through nginx at
+`http://localhost:8080`.
 
-По умолчанию JavaScript обращается к API `http://localhost:8000`. Если нужен другой адрес:
+JavaScript requests use `http://localhost:8000` as the default API address.
+To change it:
 
 ```js
 localStorage.setItem("apiBaseUrl", "http://localhost:8000")
@@ -72,127 +80,118 @@ localStorage.setItem("apiBaseUrl", "http://localhost:8000")
 
 ## API endpoints
 
-### Клиенты
+### Customers
 
-- `GET /clients` - список клиентов.
-- `POST /clients` - создать клиента.
-- `GET /clients/{client_id}` - получить клиента.
-- `PUT /clients/{client_id}` - обновить клиента.
-- `DELETE /clients/{client_id}` - удалить клиента.
+- `GET /clients`: list customers.
+- `POST /clients`: create a customer.
+- `GET /clients/{client_id}`: retrieve a customer.
+- `PUT /clients/{client_id}`: update a customer.
+- `DELETE /clients/{client_id}`: delete a customer.
 
-### Предсказания
+### Predictions
 
-- `POST /predictions/{client_id}` - сделать прогноз оттока и сохранить его.
-- `GET /predictions` - история всех прогнозов.
-- `GET /predictions/{client_id}` - история прогнозов клиента.
+- `POST /predictions/{client_id}`: predict churn and save the result.
+- `GET /predictions`: retrieve prediction history.
+- `GET /predictions/{client_id}`: retrieve a customer's prediction history.
 
-### ML/MLOps
+### ML and MLOps
 
-- `POST /ml/train` - обучить новую модель и активировать версию.
-- `GET /ml/metrics` - метрики активной модели.
-- `GET /ml/version` - текущая версия модели.
-- `GET /ml/logs` - журнал ML-событий.
-- `GET /ml/dashboard` - данные для MLOps-панели.
-- `GET /health` - проверка backend и БД.
+- `POST /ml/train`: train a model and activate its version.
+- `GET /ml/metrics`: retrieve active-model metrics.
+- `GET /ml/version`: retrieve the current model version.
+- `GET /ml/logs`: retrieve ML event logs.
+- `GET /ml/dashboard`: retrieve MLOps dashboard data.
+- `GET /health`: check the backend and database.
 
-## Пример работы
+## Example workflow
 
-1. Откройте `http://localhost:8080/clients.html`.
-2. Добавьте клиента.
-3. Откройте карточку клиента.
-4. Нажмите «Сделать прогноз».
-5. Результат сохранится в таблицу `predictions`.
-6. Откройте `predictions.html`, чтобы увидеть историю.
-7. Откройте `ml_dashboard.html`, чтобы увидеть версию модели, метрики и ML-журнал.
+1. Open `http://localhost:8080/clients.html`.
+2. Add a customer and open their details.
+3. Use the prediction action to estimate churn.
+4. The result is saved in the `predictions` table.
+5. Open `predictions.html` to inspect prediction history.
+6. Open `ml_dashboard.html` to view the model version, metrics, and ML event log.
 
-Если активной модели нет, backend автоматически обучит первую модель при первом прогнозе. Также модель можно обучить вручную через `POST /ml/train`.
+If no model is active, the backend trains the initial model when the first
+prediction is requested. You can also start training with `POST /ml/train`.
 
-## Обучение модели
+## Model training
 
-Модель обучается на синтетическом датасете с устойчивым сигналом оттока:
+Training uses a synthetic dataset with a consistent churn signal:
 
-- высокая частота обращений в поддержку повышает риск;
-- задолженность повышает риск;
-- низкая активность повышает риск;
-- долгий срок использования снижает риск;
-- тип тарифа влияет на вероятность оттока.
+- Frequent support requests increase risk.
+- Outstanding debt increases risk.
+- Low activity increases risk.
+- Longer customer tenure reduces risk.
+- The subscription plan affects churn probability.
 
-Команда через API:
+Start training through the API:
 
 ```bash
 curl -X POST http://localhost:8000/ml/train
 ```
 
-Альтернативно можно запустить обучающий модуль без записи в registry:
+Alternatively, run the training module without writing a registry record:
 
 ```bash
 cd project/backend
 python -m app.ml.train_model
 ```
 
-Основной production-путь обучения в проекте - endpoint `/ml/train`, потому что он сохраняет запись в `model_registry` и ML-журнал.
+The application's main training workflow uses `/ml/train` because it writes both
+a `model_registry` record and ML event logs.
 
-## Как сделать прогноз
+## Make a prediction
 
 ```bash
 curl -X POST http://localhost:8000/predictions/1
 ```
 
-Ответ содержит:
+The response includes churn probability (`prediction_value`), risk class
+(`prediction_label`), model version (`model_version`), and the input features.
 
-- вероятность оттока `prediction_value`;
-- класс риска `prediction_label`;
-- версию модели `model_version`;
-- признаки, переданные в модель.
+## MLflow tracking
 
-## MLflow
+The MLflow Tracking Server is available at `http://localhost:5000`.
+Training records:
 
-MLflow Tracking Server доступен по адресу `http://localhost:5000`.
-
-При обучении логируются:
-
-- параметры модели;
-- accuracy, precision, recall, f1-score, ROC-AUC;
-- размер train/test выборок;
-- sklearn model artifact;
-- JSON с метриками.
+- Model parameters.
+- Accuracy, precision, recall, F1 score, and ROC-AUC.
+- Training and test set sizes.
+- The scikit-learn model artifact.
+- Metrics in JSON format.
 
 ## Model versioning
 
-Каждое обучение создает версию по UTC timestamp с микросекундами, например `20260510204111012345`.
+Each training run creates a version from a UTC timestamp with microseconds,
+for example `20260510204111012345`.
 
-Версия сохраняется:
+The version is recorded in the `joblib` artifact filename, `latest.json`, the
+`model_registry` table, and each prediction record. This identifies the model
+that produced a particular prediction.
 
-- в имени `joblib`-артефакта;
-- в `latest.json`;
-- в таблице `model_registry`;
-- в каждой записи прогноза.
-
-Это позволяет понять, какой именно моделью был сделан прогноз.
-
-## Тестирование
+## Tests
 
 ```bash
 cd project/backend
 pytest -q
 ```
 
-Тесты используют SQLite и локальный file-based MLflow store, поэтому им не нужен PostgreSQL или Docker Compose.
+Tests use SQLite and a local file-based MLflow store. PostgreSQL and Docker Compose
+are not required for the test suite.
 
-## Масштабирование
+## Possible extensions
 
-Систему можно развивать так:
+- Move inference into a dedicated service.
+- Add a training queue such as Celery or RQ.
+- Use MLflow Model Registry as the source of the active model.
+- Add drift monitoring and evaluation against observed outcomes.
+- Store real datasets in object storage.
+- Add authentication and user roles.
+- Deploy the frontend through a separate CDN or nginx service.
+- Separate database read and write workloads.
 
-- вынести ML inference в отдельный сервис;
-- добавить очередь задач для обучения, например Celery/RQ;
-- подключить Model Registry MLflow как основной источник активной модели;
-- добавить мониторинг drift и качества после факта;
-- хранить реальные датасеты в object storage;
-- добавить авторизацию и роли пользователей;
-- вынести frontend в отдельный CDN/nginx deployment;
-- разделить read/write БД-нагрузку.
-
-## Структура проекта
+## Project structure
 
 ```text
 project/
@@ -227,4 +226,7 @@ project/
 
 ## Security note
 
-Credentials present in `docker-compose.yml` and `.env.example` are development-only defaults for the local demo stack. Replace them before deploying the project outside a local development environment. Runtime `.env`, database files, trained-model artifacts and experiment data are excluded from Git.
+Credentials in `docker-compose.yml` and `.env.example` are development-only defaults
+for the local demo stack. Replace them before deployment outside a local development
+environment. Runtime `.env`, database files, trained-model artifacts, and experiment
+data are excluded from Git.
