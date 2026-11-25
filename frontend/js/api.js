@@ -15,8 +15,19 @@ async function apiRequest(path, options = {}) {
 
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const message = payload.detail || payload.message || `HTTP ${response.status}`;
-    throw new Error(message);
+    let message = typeof payload?.detail === "string" ? payload.detail : "";
+    if (Array.isArray(payload?.detail)) {
+      message = payload.detail
+        .filter((issue) => typeof issue?.msg === "string")
+        .map((issue) => {
+          const location = Array.isArray(issue.loc) ? issue.loc : [];
+          const path = (location[0] === "body" ? location.slice(1) : location).join(".");
+          return path ? `${path}: ${issue.msg}` : issue.msg;
+        })
+        .join("; ");
+    }
+    if (!message && typeof payload?.message === "string") message = payload.message;
+    throw new Error(message || `HTTP ${response.status}`);
   }
   return payload;
 }
