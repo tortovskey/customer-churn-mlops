@@ -16,6 +16,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Test frontend API errors
+        working-directory: .
+        run: node --test tests/frontend-api.test.cjs
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
